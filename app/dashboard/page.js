@@ -40,7 +40,7 @@ const getArticles = (posts) => {
       parsedTitle = parse(decode(`<p>${post.title}</p>`, {level: 'html5'}));
     }
     return (
-      <tr key={post._id} className="border border-slate-400 hover:bg-white">
+      <tr key={post._id} className="border border-site-gray-700 hover:bg-white">
         <td className="text-left p-4"><Link href={`/posts/${post._id}`}>{parsedTitle}</Link></td>
         <td className="text-left p-4"><Date dateString={post.date_created} /></td>
         <td className="text-left p-4">{post.date_updated? <Date dateString={post.date_updated} /> : '-'}</td>
@@ -68,7 +68,7 @@ export default async function Dashboard() {
       <div>
         <table className="table-auto w-full">
           <thead>
-            <tr className="bg-white border border-slate-400">
+            <tr className="bg-white border border-site-gray-700">
               <th className="text-left p-4">Title</th>
               <th className="text-left p-4">Date Created</th>
               <th className="text-left p-4">Last Modified</th>
