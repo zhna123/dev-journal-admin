@@ -13,7 +13,7 @@ const getPosts = async() => {
       method: "GET",
       mode: 'cors',
       headers: { cookie },
-      next: { revalidate: 0 }
+      // next: { revalidate: 0 }
       // *** include credential won't work in server component
       // *** Need to attach cookie using headers() function like above
       // credentials: 'include'        

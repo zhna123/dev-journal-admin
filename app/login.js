@@ -30,7 +30,7 @@ export default function LogIn() {
         console.log("login failed.")
         reset()
       }
-      if (res.ok) {
+      if (res.ok) {        
         router.push('/dashboard')
       }
     } catch (e) {
