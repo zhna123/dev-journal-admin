@@ -84,7 +84,7 @@ export default function UpdatePost({postTitle, postContent, postId}) {
   }
 
   return (
-    <div className="p-12">
+    <div className="p-5 sm:p-12">
       <p className="text-xl font-medium mb-6">Edit Post</p>
       <form className="flex flex-col gap-2">
         <label htmlFor="title"> Title </label>

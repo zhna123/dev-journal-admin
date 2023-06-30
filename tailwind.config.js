@@ -13,6 +13,9 @@ module.exports = {
           600: 'rgb(195, 200, 201)',
           700: 'rgb(172, 175, 176)'
         }
+      },
+      fontFamily: {
+        sans: ['var(--font-rubik)'],
       }
     },
   },

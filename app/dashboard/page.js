@@ -42,8 +42,8 @@ const getArticles = (posts) => {
     return (
       <tr key={post._id} className="border border-site-gray-700 hover:bg-white">
         <td className="text-left p-4"><Link href={`/posts/${post._id}`}>{parsedTitle}</Link></td>
-        <td className="text-left p-4"><Date dateString={post.date_created} /></td>
-        <td className="text-left p-4">{post.date_updated? <Date dateString={post.date_updated} /> : '-'}</td>
+        <td className="hidden sm:table-cell sm:text-left sm:p-4"><Date dateString={post.date_created} /></td>
+        <td className="hidden sm:table-cell sm:text-left sm:p-4">{post.date_updated? <Date dateString={post.date_updated} /> : '-'}</td>
         <td className="text-left p-4">{post.is_published ? 'Published' : 'Draft'}</td>
       </tr>
     )
@@ -58,7 +58,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen p-12 flex flex-col">
+    <div className="min-h-screen p-5 sm:p-12 flex flex-col">
       <div className="flex items-center justify-center gap-8 mb-8">
         <p className="text-2xl">All Articles</p>
         <Link href={"/dashboard/new-post"}>
@@ -70,8 +70,8 @@ export default async function Dashboard() {
           <thead>
             <tr className="bg-white border border-site-gray-700">
               <th className="text-left p-4">Title</th>
-              <th className="text-left p-4">Date Created</th>
-              <th className="text-left p-4">Last Modified</th>
+              <th className="hidden sm:table-cell sm:text-left sm:p-4">Date Created</th>
+              <th className="hidden sm:table-cell sm:text-left sm:p-4">Last Modified</th>
               <th className="text-left p-4">Status</th>
             </tr>
           </thead>
