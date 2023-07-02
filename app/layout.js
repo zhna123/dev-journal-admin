@@ -17,11 +17,11 @@ export default function RootLayout({ children }) {
       <body className={`${rubik.variable} font-sans flex flex-col min-h-screen`}>
         <div className='flex flex-col min-h-screen'>
           <header className='min-h-fit flex justify-between items-center px-5 sm:px-12 bg-teal-100'>
-            <div className='font-medium py-2'>A Developer's Journal</div>
+            <div className='font-medium py-2'>A Developer&apos; Journal</div>
           </header>
             {children}
           <footer className='h-10 flex justify-center items-center mt-auto bg-teal-600'>
-            <span>A Developer's Journal @zhna123</span>
+            <span>A Developer&apos;s Journal @zhna123</span>
           </footer> 
         </div>        
       </body>

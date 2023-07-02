@@ -7,6 +7,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { debounce } from "lodash"
 import { saveData } from "@/lib/db";
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function UpdatePost({postTitle, postContent, postId}) {
 
   const router = useRouter()
@@ -31,7 +33,7 @@ export default function UpdatePost({postTitle, postContent, postId}) {
   const debouncedSave = useCallback( 
     debounce(async (data) => {
       if(postId !== null && !cleanupFlag.current) {
-        const doc = await saveData(data, `http://localhost:3000/posts/${postId}`, 'PUT')
+        const doc = await saveData(data, `${SERVER_URL}/posts/${postId}`, 'PUT')
         if (doc === null) {
           router.replace('/')
         }
@@ -58,7 +60,7 @@ export default function UpdatePost({postTitle, postContent, postId}) {
   const handleDraftSave = () => {
 
     const save = async(data) => {
-      const doc = await saveData(data, `http://localhost:3000/posts/${postId}`, 'PUT')
+      const doc = await saveData(data, `${SERVER_URL}/posts/${postId}`, 'PUT')
       if (doc === null) {
         router.replace('/')
       } else {
@@ -72,7 +74,7 @@ export default function UpdatePost({postTitle, postContent, postId}) {
   const handlePostPublish = () => {
 
     const save = async(data) => {
-      const doc = await saveData(data, `http://localhost:3000/posts/${postId}`, 'PUT', true)
+      const doc = await saveData(data, `${SERVER_URL}/posts/${postId}`, 'PUT', true)
       if (doc === null) {
         router.replace('/')
       } else {

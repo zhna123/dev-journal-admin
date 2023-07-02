@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import UpdatePost from "./update";
 import { saveData } from '@/lib/db';
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function NewPost() {
 
   const router = useRouter()
@@ -15,7 +17,7 @@ export default function NewPost() {
   useEffect(() => {
     (async () => {
       const data = {title:"", content:""}
-      const doc = await saveData(data, 'http://localhost:3000/posts', 'POST')
+      const doc = await saveData(data, `${SERVER_URL}/posts`, 'POST')
 
       if (doc !== null) {
         setPostId(doc._id);

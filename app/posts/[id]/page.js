@@ -7,6 +7,8 @@ import {decode} from 'html-entities';
 import { useRouter } from 'next/navigation';
 import UpdatePost from "@/app/dashboard/new-post/update"
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 // This is a hack(use 'use client') in order to use credentials: 'include'
 // I cannot use header() function in generateStaticParams.
 // header() function makes page do dynamic render, but
@@ -14,7 +16,7 @@ import UpdatePost from "@/app/dashboard/new-post/update"
 // https://github.com/vercel/next.js/issues/46356
 export async function generateStaticParams() {
 
-  const res = await fetch('http://localhost:3000/posts', {
+  const res = await fetch(`${SERVER_URL}/posts`, {
     method: "GET",
     mode: 'cors',
     credentials: 'include'        
@@ -38,7 +40,7 @@ const getPost = cache(async(params) => {
   if (params.length === 0) {
     return undefined
   }
-  const res = await fetch(`http://localhost:3000/posts/${params.id}`, {
+  const res = await fetch(`${SERVER_URL}/posts/${params.id}`, {
     method: "GET",
     mode: 'cors',
     credentials: 'include'        
@@ -97,7 +99,7 @@ export default function Post({params}) {
   }
 
   const handleDelete = async (postId) => {
-    const res = await fetch(`http://localhost:3000/posts/${postId}`, {
+    const res = await fetch(`${SERVER_URL}/posts/${postId}`, {
       method: "DELETE",
       mode: 'cors',
       credentials: 'include'        

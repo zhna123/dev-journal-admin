@@ -4,6 +4,8 @@ import { ErrorMessage } from "@hookform/error-message"
 import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation'
 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export default function LogIn() {
 
   const router = useRouter()
@@ -17,7 +19,7 @@ export default function LogIn() {
 
   const onSubmit = async(data) => {
     try {
-      const res = await fetch('http://localhost:3000/auth/login', {
+      const res = await fetch(`${SERVER_URL}/auth/login`, {
         method: "POST",
         mode: 'cors',
         credentials: 'include',

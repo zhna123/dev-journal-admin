@@ -1,22 +1,21 @@
+'use client'
 import Date from '../../components/date';
 import Link from 'next/link'
-import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import parse from 'html-react-parser'
 import {decode} from 'html-entities';
+import { use, cache } from 'react'
 
-const getPosts = async() => {
-  const headersInstance = headers()
-  const cookie = headersInstance.get('Cookie')
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
+const getPosts = cache(async() => {
   try {
-    const res = await fetch('http://localhost:3000/posts', { 
+    const res = await fetch(`${SERVER_URL}/posts`, { 
       method: "GET",
       mode: 'cors',
-      headers: { cookie },
-      // next: { revalidate: 0 }
+      next: { revalidate: 0 },
       // *** include credential won't work in server component
-      // *** Need to attach cookie using headers() function like above
-      // credentials: 'include'        
+      credentials: 'include'        
     })
     if (res.status === 401) {
       console.log("unauthorized request.")
@@ -31,7 +30,7 @@ const getPosts = async() => {
   } catch (e) {
     console.log("error retrieving all posts:" + e)
   }
-}
+})
 
 const getArticles = (posts) => {
   return posts.map((post) => {
@@ -50,9 +49,10 @@ const getArticles = (posts) => {
   })
 }
 
-export default async function Dashboard() {
-
-  const posts = await getPosts()
+export default function Dashboard() {
+  // hack to call async function without making the component async
+  // client component can't be async yet
+  const posts = use(getPosts())
   if (!posts) {
     redirect('/')
   }

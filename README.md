@@ -7,3 +7,4 @@ It is the admin dashboard for authoring and editing the content of [A Developer'
 ## Run the development server:
 
 `npm run dev`
+
