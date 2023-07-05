@@ -8,3 +8,10 @@ It is the admin dashboard for authoring and editing the content of [A Developer'
 
 `npm run dev`
 
+## What I've learned
+
+* Include JWT to request header
+* Auto save blog posts
+* Client component VS Server component
+* Responsive design with tailwindCSS
+
