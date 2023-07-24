@@ -12,7 +12,7 @@ export default function Page() {
     if (jwtExpirationTS && currentTimestamp < parseInt(jwtExpirationTS)) {
       // JWT is not expired
       console.log('JWT is valid');
-      return redirect('/dashboard')
+      redirect('/dashboard')
     } 
   } 
 

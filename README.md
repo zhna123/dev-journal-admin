@@ -8,3 +8,6 @@ It is the admin dashboard for authoring and editing the content of [A Developer'
 
 `npm run dev`
 
+* Style - tailwindCSS
+
+* Form - React Hook Form

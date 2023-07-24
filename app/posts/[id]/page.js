@@ -1,7 +1,7 @@
 'use client'
 
 import Date from "@/components/date"
-import { use, cache, useState } from 'react'
+import { useState, useEffect } from 'react'
 import parse from 'html-react-parser'
 import {decode} from 'html-entities';
 import { useRouter } from 'next/navigation';
@@ -36,42 +36,41 @@ export async function generateStaticParams() {
   }))
 }
  
-const getPost = cache(async(params) => {
-  if (params.length === 0) {
-    return undefined
-  }
-  const res = await fetch(`${SERVER_URL}/posts/${params.id}`, {
-    method: "GET",
-    mode: 'cors',
-    credentials: 'include'        
-  })
-  if (res.status === 401) {
-    console.log("unauthorized request.")
-    return undefined
-  } 
-  if (res.status === 403) {
-    console.log("forbidden request.")
-    return undefined
-  }
-  const post = await res.json()
-  return post
-})
 
-// client component doesn't support async/await yet
-// using 'cache' to wrap the async function and 
-// 'use' to handle promise is a current workaround
-// https://github.com/vercel/next.js/issues/42180
 export default function Post({params}) {
 
   const router = useRouter()
 
-  const post = use(getPost(params))
-  if (!post) {
-    router.push('/')
-  }
-
   const [showDelete, setShowDelete] = useState(false);
   const [showModify, setShowModify] = useState(false);
+
+  const [post, setPost] = useState({})
+  
+  useEffect(() => {
+    const fetchedPost = async(params) => {
+      // failed authentication
+      if (params.length === 0) {
+        return router.push('/')
+      }
+      const res = await fetch(`${SERVER_URL}/posts/${params.id}`, {
+        method: "GET",
+        mode: 'cors',
+        credentials: 'include'        
+      })
+      if (res.status === 401) {
+        console.log("unauthorized request.")
+        return router.push('/')
+      } 
+      if (res.status === 403) {
+        console.log("forbidden request.")
+        return router.push('/')
+      }
+      const p = await res.json()
+      setPost(p)
+    }
+    fetchedPost(params)
+    
+  }, [])
 
   const PostDetail = ({ postTitle, postContent, dateCreated, isPublished}) => {
 
@@ -166,7 +165,7 @@ export default function Post({params}) {
 
   return (
     <div className="min-h-screen p-12">
-      { renderComponent(post) }   
+      { Object.keys(post).length !== 0 ? renderComponent(post) : <div /> }   
     </div>    
   )
 }

@@ -1,36 +1,12 @@
 'use client'
 import Date from '../../components/date';
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import parse from 'html-react-parser'
 import {decode} from 'html-entities';
-import { use, cache } from 'react'
+import { useState, useEffect } from 'react'
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-
-const getPosts = cache(async() => {
-  try {
-    const res = await fetch(`${SERVER_URL}/posts`, { 
-      method: "GET",
-      mode: 'cors',
-      next: { revalidate: 0 },
-      // *** include credential won't work in server component
-      credentials: 'include'        
-    })
-    if (res.status === 401) {
-      console.log("unauthorized request.")
-      return undefined
-    } 
-    if (res.status === 403) {
-      console.log("forbidden request.")
-      return undefined
-    }
-    return await res.json()
-    
-  } catch (e) {
-    console.log("error retrieving all posts:" + e)
-  }
-})
 
 const getArticles = (posts) => {
   return posts.map((post) => {
@@ -50,12 +26,39 @@ const getArticles = (posts) => {
 }
 
 export default function Dashboard() {
-  // hack to call async function without making the component async
-  // client component can't be async yet
-  const posts = use(getPosts())
-  if (!posts) {
-    redirect('/')
-  }
+
+  const [posts, setPosts] = useState([])
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchPosts = async() => {
+      try {
+        const res = await fetch(`${SERVER_URL}/posts`, { 
+          method: "GET",
+          mode: 'cors',
+          next: { revalidate: 0 },
+          // *** include credential won't work in server component
+          credentials: 'include'        
+        })
+        if (res.status === 401) {
+          console.log("unauthorized request.")
+          return router.push('/')
+        } 
+        if (res.status === 403) {
+          console.log("forbidden request.")
+          return router.push('/')
+        }
+        const p = await res.json()
+        setPosts(p)
+        
+      } catch (e) {
+        console.log("error retrieving all posts:" + e)
+      }
+    }
+    fetchPosts()
+    
+  }, [])
+
 
   return (
     <div className="min-h-screen p-5 sm:p-12 flex flex-col">
