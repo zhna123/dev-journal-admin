@@ -8,23 +8,6 @@ import { useState, useEffect } from 'react'
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const getArticles = (posts) => {
-  return posts.map((post) => {
-    let parsedTitle = '[No Title Provided]'
-    if (post.title != '') {
-      parsedTitle = parse(decode(`<p>${post.title}</p>`, {level: 'html5'}));
-    }
-    return (
-      <tr key={post._id} className="border border-site-gray-700 hover:bg-white">
-        <td className="text-left p-4"><Link href={`/posts/${post._id}`}>{parsedTitle}</Link></td>
-        <td className="hidden sm:table-cell sm:text-left sm:p-4"><Date dateString={post.date_created} /></td>
-        <td className="hidden sm:table-cell sm:text-left sm:p-4">{post.date_updated? <Date dateString={post.date_updated} /> : '-'}</td>
-        <td className="text-left p-4">{post.is_published ? 'Published' : 'Draft'}</td>
-      </tr>
-    )
-  })
-}
-
 export default function Dashboard() {
 
   const [posts, setPosts] = useState([])
@@ -59,7 +42,23 @@ export default function Dashboard() {
     
   }, [])
 
-
+  const getArticles = (posts) => {
+    return posts.map((post) => {
+      let parsedTitle = '[No Title Provided]'
+      if (post.title != '') {
+        parsedTitle = parse(decode(`<p>${post.title}</p>`, {level: 'html5'}));
+      }
+      return (
+        <tr key={post._id} className="border border-site-gray-700 hover:bg-white">
+          <td className="text-left p-4"><Link href={`/posts/${post._id}`}>{parsedTitle}</Link></td>
+          <td className="hidden sm:table-cell sm:text-left sm:p-4"><Date dateString={post.date_created} /></td>
+          <td className="hidden sm:table-cell sm:text-left sm:p-4">{post.date_updated? <Date dateString={post.date_updated} /> : '-'}</td>
+          <td className="text-left p-4">{post.is_published ? 'Published' : 'Draft'}</td>
+        </tr>
+      )
+    })
+  }
+  
   return (
     <div className="min-h-screen p-5 sm:p-12 flex flex-col">
       <div className="flex items-center justify-center gap-8 mb-8">
